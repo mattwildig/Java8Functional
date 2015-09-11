@@ -32,7 +32,7 @@ public class ImperativeLoveLetter {
 				String noun1 = getRandomWord(nouns);
 				String optadv = (generator.nextInt(10) < 5) ? "" : getRandomWord(advs);
 				String verb = getRandomWord(verbs);
-				String optadj2 = (((int)Math.random()* 10) < 5) ? "" : getRandomWord(adjs);
+				String optadj2 = (generator.nextInt(10) < 5) ? "" : getRandomWord(adjs);
 				String noun2 = getRandomWord(nouns);
 				String concat = "";
 				if (last != null || last == LONG) {
