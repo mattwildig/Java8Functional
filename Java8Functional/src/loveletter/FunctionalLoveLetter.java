@@ -8,10 +8,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class FunctionalLoveLetter {
-	static Integer LONG=1;
-	static Integer SHORT=2;
-	Integer last = null;
-
 	
 	List<String> sals1 = new ArrayList<>(Arrays.asList("Beloved", "Darling", "Dear", "Dearest", "Fanciful", "Honey"));
 	List<String> sals2 = new ArrayList<>(Arrays.asList("Chickpea", "Dear", "Duck", "Jewel", "Love", "Moppet", "Sweetheart"));
@@ -36,9 +32,11 @@ public class FunctionalLoveLetter {
 	private String makeGreeting(){
 		return String.format("%s %s,\n     ", getRandomWord(sals1), getRandomWord(sals2));
 	}
+	
 	private String makeBody(){
-		last = null;
-		String body = Stream.generate(() -> makeSentenceSegment()).limit(5).collect(Collectors.joining());
+		String body = Stream.generate(this::makeSentenceSegment)
+				.limit(5)
+				.collect(Collectors.joining(". "));
 		return body;
 	}
 
@@ -46,30 +44,17 @@ public class FunctionalLoveLetter {
 		String sentence;
 		if (generator.nextBoolean()) {
 			//LONG
-			String prefix;
-			if (last != null) {
-				prefix = ". My ";
-			} else {
-				prefix = "My ";
-			}
 			sentence = Stream.of( 
+					"My",
 					getNounClause(generator.nextBoolean()), 
 					getVerbClause(generator.nextBoolean()), 
 					getNounClause(generator.nextBoolean()))
-				.collect(Collectors.joining(" ", prefix, ""));
-			last = LONG;
+				.collect(Collectors.joining(" "));
 		} else {
 			//SHORT
-			String prefix = "";
-			if (last == SHORT) {
-				prefix = ", my ";
-			} else if (last == LONG) {
-				prefix = ". You are my ";
-			} else {
-				prefix = "You are my ";
-			}
-			sentence = Stream.of(getNounClause(true)).collect(Collectors.joining(" ", prefix, ""));
-			last = SHORT;
+			sentence = Stream.generate(()-> getNounClause(true))
+					.limit(generator.nextInt(2) + 1)
+					.collect(Collectors.joining(", my ", "You are my ", ""));	
 		}
 
 		return sentence;
