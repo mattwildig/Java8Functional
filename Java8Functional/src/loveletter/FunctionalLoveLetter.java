@@ -3,10 +3,8 @@ package loveletter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class FunctionalLoveLetter {
@@ -45,7 +43,7 @@ public class FunctionalLoveLetter {
 	}
 
 	private String makeSentenceSegment(){
-		StringBuilder sentence = new StringBuilder();
+		String sentence;
 		if (generator.nextBoolean()) {
 			//LONG
 			String prefix;
@@ -54,7 +52,11 @@ public class FunctionalLoveLetter {
 			} else {
 				prefix = "My ";
 			}
-			sentence.append(makeLongSentence(prefix));
+			sentence = Stream.of( 
+					getNounClause(generator.nextBoolean()), 
+					getVerbClause(generator.nextBoolean()), 
+					getNounClause(generator.nextBoolean()))
+				.collect(Collectors.joining(" ", prefix, ""));
 			last = LONG;
 		} else {
 			//SHORT
@@ -66,24 +68,13 @@ public class FunctionalLoveLetter {
 			} else {
 				prefix = "You are my ";
 			}
-			sentence.append(makeShortSentence(prefix));
+			sentence = Stream.of(getNounClause(true)).collect(Collectors.joining(" ", prefix, ""));
 			last = SHORT;
 		}
 
-		return sentence.toString();
+		return sentence;
 	}
-	private String makeLongSentence(String prefix) {	
-		return Stream.of( 
-					getNounClause(generator.nextBoolean()), 
-					getVerbClause(generator.nextBoolean()), 
-					getNounClause(generator.nextBoolean()))
-				.collect(Collectors.joining(" ", prefix, ""));
-	}
-	
-	private String makeShortSentence(String prefix) {
-		return Stream.of(getNounClause(true)).collect(Collectors.joining(" ", prefix, ""));
-	}
-	
+
 	private String getNounClause(boolean addAdjective){
 		if ( addAdjective){
 			return getRandomWord(adjs) + " " + getRandomWord(nouns);
