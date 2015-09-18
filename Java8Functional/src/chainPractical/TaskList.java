@@ -1,4 +1,4 @@
-package practical;
+package chainPractical;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -8,10 +8,33 @@ import java.util.List;
 public class TaskList {
 	public static void main(String args[]){
 		List<Task> tasks = getTasks(); 
-		TaskProcessor dateSortedAdminTagProcessor = new TaskProcessor(new TagFilter("admin"), 
-																		 new DateSorter());
-		List<Task> dateSortedAdminTasks = dateSortedAdminTagProcessor.filterAndSortTasks(tasks);
-		for( Task task : dateSortedAdminTasks){
+		TaskListProcessor processor = new TaskListProcessor ( new TagFilter(null, "admin"),
+															  new TaskListSorter( new DateSorter(null)));
+		
+		System.out.println("Tasks by tag 'admin' sorted by dueDate");
+		List<Task> processedTasks = processor.filterAndSortList(tasks);
+		for( Task task : processedTasks){
+			System.out.println(task);
+		}
+		
+		System.out.println("----");
+		System.out.println("Tasks by tag 'admin' and priority < 2 sorted by dueDate");
+		TaskListProcessor processor2 = new TaskListProcessor ( new TagFilter( new PriorityFilter(null, 2), "admin"),
+												new TaskListSorter( new DateSorter(null)));
+		
+		processedTasks = processor2.filterAndSortList(tasks);
+		for( Task task : processedTasks){
+			System.out.println(task);
+		}
+		
+		System.out.println("----");
+		System.out.println("Tasks by tag 'admin' and priority < 2 sorted by dueDate then description");
+		TaskListProcessor processor3 = new TaskListProcessor ( new TagFilter( new PriorityFilter(null, 2), "admin"),
+				new TaskListSorter( new DateSorter(new DescriptionSorter(null))));
+		
+		
+		processedTasks = processor3.filterAndSortList(tasks);
+		for( Task task : processedTasks){
 			System.out.println(task);
 		}
 	}
@@ -28,7 +51,7 @@ public class TaskList {
 		tasks.add(new Task("admin", LocalDate.of(2015,Month.SEPTEMBER, 16), 1, "make list"));
 		tasks.add(new Task("admin", LocalDate.of(2015,Month.SEPTEMBER, 14), 1, "anything"));
 		tasks.add(new Task("misc", LocalDate.of(2015,Month.SEPTEMBER, 20), 4, "pay bill"));
-		tasks.add(new Task("admin", LocalDate.of(2015,Month.SEPTEMBER, 21), 1, "pay bill"));
+		tasks.add(new Task("admin", LocalDate.of(2015,Month.SEPTEMBER, 21), 1, "add entry"));
 		tasks.add(new Task("java", LocalDate.of(2015,Month.SEPTEMBER, 29), 2, "pay bill"));
 		tasks.add(new Task("admin", LocalDate.of(2015,Month.SEPTEMBER, 17), 3, "pay bill"));
 		tasks.add(new Task("admin", LocalDate.of(2015,Month.SEPTEMBER, 28), 1, "pay bill"));
