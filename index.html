@@ -81,7 +81,7 @@
 							</aside>
 							<pre><code data-trim>
 								count = words.stream()
-											.filter((word)-> {return word.equals(pattern);})
+											.filter((word)-&gt; {return word.equals(pattern);})
 											.count();
 							</code></pre>
 							<p>Rather than</p>
@@ -103,7 +103,7 @@
 							functional composition 
 							<aside class="notes">build up complex functions from smaller simpler functions</aside>
 							<pre><code data-trim>
-								List<Book> sortedBooks = books.stream()
+								List&lt;Book&gt; sortedBooks = books.stream()
 									.sorted(Comparator.comparing(Book::getAuthor).thenComparing(Book::getTitle))
 									.collect(Collectors.toList());
 									</pre></code>
@@ -190,7 +190,7 @@
 					<p>Replaced with</p>
 					<pre><code data-trim>
 					JButton cancelButton = new JButton();
-					cancelButton.addActionListener( event -> cleanUpAndExit());
+					cancelButton.addActionListener( event -&gt; cleanUpAndExit());
 					</pre></code>
 					</section>
 					<section>
@@ -209,20 +209,20 @@
 					messageWriter.writeMessage(generateMessage());
 					</pre></code>
 					<p>Replaced with</p>
-					<pre><code class="java">
-					public void writeMessage(Supplier<String> messageSupplier){
+					<pre><code data-trim>
+					public void writeMessage(Supplier&lt;String&gt; messageSupplier){
 						if (messageRequired){
 							doWrite(messageSupplier.get());
 						}
 					}
 
-					messageWriter.writeMessage(() -> generateMessage());</pre></code>
+					messageWriter.writeMessage(() -&gt; generateMessage());</pre></code>
 					</section>
 					<section>
 					<p>External iteration</p>
 					<p>Example:</p>
-					<pre><code class="java">
-					public String find(List<String> stringsToSearch, String stringToFind){
+					<pre><code data-trim>
+					public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 						String found= null;
 						for( String string : stringsToSearch ){
 							if ( string.equals(stringToFind)){
@@ -234,8 +234,8 @@
 					}
 					</pre></code>
 					<p>Replaced with</p>
-					<pre><code class="java">
-					public String find(List<String> stringsToSearch, String stringToFind){
+					<pre><code data-trim>
+					public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 						return stringsToSearch.stream().findFirst().orElse(null);
 					}
 					</pre></code>
