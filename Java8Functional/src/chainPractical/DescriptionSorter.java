@@ -1,5 +1,9 @@
 package chainPractical;
 
+/**
+ * @author Debbie
+ * Compare tasks by description - part of Chain of Responsibility
+ */
 public class DescriptionSorter extends TaskComparator {
 
 	public DescriptionSorter(TaskComparator nextProcessor) {

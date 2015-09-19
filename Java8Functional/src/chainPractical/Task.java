@@ -1,8 +1,11 @@
 package chainPractical;
 
 import java.time.LocalDate;
-//filter by tag, by due date, by description
-//sort by date and/or priority
+
+/**
+ * @author Debbie
+ * Represents a task in a to do list
+ */
 public class Task {
 	
 	private String tag;
@@ -10,9 +13,16 @@ public class Task {
 	private Integer priority;
 	private String description;
 	
-	public Task(String tag, LocalDate localDate, Integer priority, String description){
+	/**
+	 * Create a task:
+	 * @param tag			searchable label for task
+	 * @param localDate		date task is due to be done
+	 * @param priority		priority (lower number, higher priority)
+	 * @param description	description of task
+	 */
+	public Task(String tag, LocalDate dueDate, Integer priority, String description){
 		this.tag = tag;
-		this.dueDate = localDate;
+		this.dueDate = dueDate;
 		this.priority = priority;
 		this.description = description;
 	}

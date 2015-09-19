@@ -3,6 +3,10 @@ package chainPractical;
 import java.util.List;
 
 
+/**
+ * @author Debbie
+ * Processor for filtering and sorting a list of Task
+ */
 public class TaskListProcessor {
 	private TaskListFilterer filterChain;
 	private TaskListSorter sorter;

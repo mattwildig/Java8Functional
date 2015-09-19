@@ -6,18 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskList {
+	
+	/* (non-Javadoc)
+	 * tests for TaskListProcessor
+	 */
 	public static void main(String args[]){
 		List<Task> tasks = getTasks(); 
-		TaskListProcessor processor = new TaskListProcessor ( new TagFilter(null, "admin"),
-															  new TaskListSorter( new DateSorter(null)));
 		
 		System.out.println("Tasks by tag 'admin' sorted by dueDate");
+		TaskListProcessor processor = new TaskListProcessor ( new TagFilter(null, "admin"),
+															  new TaskListSorter( new DateSorter(null)));
+				
 		List<Task> processedTasks = processor.filterAndSortList(tasks);
 		for( Task task : processedTasks){
 			System.out.println(task);
 		}
-		
 		System.out.println("----");
+		
 		System.out.println("Tasks by tag 'admin' and priority < 2 sorted by dueDate");
 		TaskListProcessor processor2 = new TaskListProcessor ( new TagFilter( new PriorityFilter(null, 2), "admin"),
 												new TaskListSorter( new DateSorter(null)));
@@ -31,14 +36,14 @@ public class TaskList {
 		System.out.println("Tasks by tag 'admin' and priority < 2 sorted by dueDate then description");
 		TaskListProcessor processor3 = new TaskListProcessor ( new TagFilter( new PriorityFilter(null, 2), "admin"),
 				new TaskListSorter( new DateSorter(new DescriptionSorter(null))));
-		
-		
+			
 		processedTasks = processor3.filterAndSortList(tasks);
 		for( Task task : processedTasks){
 			System.out.println(task);
 		}
 	}
 	
+	//Generate test data
 	private static List<Task> getTasks(){
 		List<Task> tasks = new ArrayList<>();
 		tasks.add(new Task("java", LocalDate.of(2015,Month.SEPTEMBER, 23), 1, "java8 talk"));

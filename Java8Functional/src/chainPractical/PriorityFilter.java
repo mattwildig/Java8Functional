@@ -3,6 +3,10 @@ package chainPractical;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Debbie
+ *	Filter tasks by priority - part of Chain of Responsibility
+ */
 public class PriorityFilter extends TaskListFilterer {
 	private int priority;
 	public PriorityFilter(TaskListFilterer nextProcessor, int priority) {

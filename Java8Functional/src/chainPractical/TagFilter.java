@@ -3,6 +3,10 @@ package chainPractical;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @author Debbie
+ * Filter tasks by tag, part of Chain of Responsibility
+ */
 public class TagFilter extends TaskListFilterer {
 	private String tagToMatch;
 	public TagFilter(TaskListFilterer nextProcessor, String tagToMatch){

@@ -1,5 +1,9 @@
 package chainPractical;
 
+/**
+ * @author Debbie
+ *	Compare tasks by dueDate - part of Chain of Responsibility
+ */
 public class DateSorter extends TaskComparator {
 
 	public DateSorter(TaskComparator nextProcessor) {
