@@ -1,0 +1,66 @@
+
+.reveal h1 {
+    color: crimson;
+}
+.reveal h2 {
+    color: blueviolet;
+}
+.reveal h3 {
+    color: darkgreen;
+}
+
+.reveal a:not(.image) {
+    color: blue;
+}
+/*********************************************
+ * LINKS
+ *********************************************
+.reveal a:not(.image) {
+  color: #8b743d;
+  text-decoration: none;
+  -webkit-transition: color .15s ease;
+  -moz-transition: color .15s ease;
+  -ms-transition: color .15s ease;
+  -o-transition: color .15s ease;
+  transition: color .15s ease; }
+
+.reveal a:not(.image):hover {
+  color: #c0a86e;
+  text-shadow: none;
+  border: none; }
+
+.reveal .roll span:after {
+  color: #fff;
+  background: #564826; }
+*/
+/*********************************************
+ * NAVIGATION CONTROLS
+ *********************************************
+.reveal .controls div.navigate-left,
+.reveal .controls div.navigate-left.enabled {
+  border-right-color: #8b743d; }
+
+.reveal .controls div.navigate-right,
+.reveal .controls div.navigate-right.enabled {
+  border-left-color: #8b743d; }
+
+.reveal .controls div.navigate-up,
+.reveal .controls div.navigate-up.enabled {
+  border-bottom-color: #8b743d; }
+
+.reveal .controls div.navigate-down,
+.reveal .controls div.navigate-down.enabled {
+  border-top-color: #8b743d; }
+
+.reveal .controls div.navigate-left.enabled:hover {
+  border-right-color: #c0a86e; }
+
+.reveal .controls div.navigate-right.enabled:hover {
+  border-left-color: #c0a86e; }
+
+.reveal .controls div.navigate-up.enabled:hover {
+  border-bottom-color: #c0a86e; }
+
+.reveal .controls div.navigate-down.enabled:hover {
+  border-top-color: #c0a86e; }
+*/

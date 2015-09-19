@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Functional Style in Java 8</title>
+
+		<meta name="description" content="Introduction to Functional Style programming and Java 8 features to support it">
+		<meta name="author" content="Debbie Roycroft">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="reveal.js/css/reveal.min.css">
+		<link rel="stylesheet" href="reveal.js/css/theme/beige.css" id="theme">
+                <link rel="stylesheet" href="css/textcolours.css">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'reveal.js/css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="reveal.js/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Java 8 and Functional Style Programming</h1>
+					<p>
+						<small>Debbie Roycroft 
+                                                <a href="http://twitter.com/DebbieRoycroft">@DebbieRoycroft</a></small></p>
+						<h4>Manchester Java Community</h3>
+                     <p>           <small><a href="http://twitter.com/mcrjava">@mcrjava</a></small> </p>
+                     <p>           <small><a href="http://www.meetup.com/ManchesterUK-Java-Community/"> meetup group</a></small> </p>
+					<p> <small><a href="https://www.linkedin.com/groups/Manchester-Java-Community-8270682/about">linkedin group</a></small></p>
+				</section>
+				<section>
+						<section>
+							<h2>Functional/Declarative Style vs Imperative Style</h2>
+							<p>what rather than how</p>
+							<aside class="notes">Up to now we've had to program Java in an imperative style- the code is written to 
+									tell the compiler exactly how to do something, whereas the declarative style can be seen as telling the 
+									system 'what' you want done, and allowing it more freedom to optimize.
+							</aside>
+							<pre><code data-trim>
+								count = words.stream()
+											.filter((word)-> {return word.equals(pattern);})
+											.count();
+							</code></pre>
+							<p>Rather than</p>
+							<pre><code data-trim>
+								for( String word : words){
+									if (word.equals(pattern)){
+										++count;
+										}
+								}
+							</pre></code>
+						</section>
+						<section>
+								pass functions as well as objects 
+								<aside class="notes"> functions and objects treated the same - 
+								lambda in example above is function passed in to the method filter
+								</aside>
+						</section>
+						<section>
+							functional composition 
+							<aside class="notes">build up complex functions from smaller simpler functions</aside>
+							<pre><code data-trim>
+								List<Book> sortedBooks = books.stream()
+									.sorted(Comparator.comparing(Book::getAuthor).thenComparing(Book::getTitle))
+									.collect(Collectors.toList());
+									</pre></code>
+						</section>
+						<section>
+
+							<p class="fragment roll-in">Transform rather than mutate</p> 
+							<aside class="notes">example above we get a new list 'sortedBooks' rather 
+							than modifying the original books container.</aside>
+							<p class="fragment roll-in">Pure functions rather than those with side-effects</p>
+
+						</section>
+					</section>
+ 			</div>
+
+		</div>
+
+		<script src="reveal.js/lib/js/head.min.js"></script>
+		<script src="reveal.js/js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
