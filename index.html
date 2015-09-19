@@ -54,6 +54,24 @@
 					<p> <small><a href="https://www.linkedin.com/groups/Manchester-Java-Community-8270682/about">linkedin group</a></small></p>
 				</section>
 				<section>
+					<h2>Functional style programming</h2>
+					<p>What is it</p>
+					<p>Why is it advocated</p>
+					<p>How would you move from imperative to functional/declarative</p>
+					<p>Does it work for us</p>
+					<aside class="notes">
+					Java 8 is pretty backwards compatible with older versions of Java.  
+					This means that the code we have always written will still compile and run, so it is (mostly) possible to 'upgrade' 
+					to Java 8 simply by recompiling your code with the newer compiler.   
+					However, the introduction of new language features like functional interfaces, functional composition constructs, 
+					lambdas and streams in Java 8 mean that it's now possible to use the language in a different way. 
+					We will take a look at functional or declarative style programming, what it is, why it might be useful and how Java 8 supports it. 
+					We'll take a look at some familiar patterns in 'older' Java code and how we might change these to a more functional style.  
+					As with all programming styles there are pros and cons, times when it will be appropriate and times when it won't. 
+					There will be a chance for you to have a go yourselves and then we can discuss.
+					</aside>
+				</section>
+				<section>
 						<section>
 							<h2>Functional/Declarative Style vs Imperative Style</h2>
 							<p>what rather than how</p>
@@ -98,6 +116,145 @@
 							<p class="fragment roll-in">Pure functions rather than those with side-effects</p>
 
 						</section>
+					</section>
+					<section>
+						<h2>Why do this?</h2>
+						<ul>
+						<li>Makes it easier to make use of parallelism 
+							<aside class="notes">
+							pure functions more likely to be thread safe, streams API parallel streams are easy to add
+							</aside>
+						</li>
+						<li>Makes code more concise
+							<aside class="notes">less 'boiler plate'</aside>
+						</li>
+						<li>Less error prone
+							<aside class="notes">maybe? - esp for pure functions 
+							(less side-effects means less 'odd' bugs caused by code executing in an unexpected order)
+							</aside>
+						</li>
+						<li>Makes intention of code clearer
+							<aside class="notes"> more readable? (once you get used to the new syntax)</aside>
+						</li>
+						<li>More efficient
+							<aside class="notes"> possibly? Compiler *may* be able to optimize code in declarative style</aside>
+						</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Functional programming support in Java 8</h2>
+						<ul>
+						<li>Lambdas
+							<aside class="notes">Lambdas allow us to store or pass (or return) a function where we might previously 
+							have only expected to be able to use an object. Lambdas can be used anywhere where a functional interface 
+							is expected.
+							</aside>
+						</li>
+						<li>Functional interfaces
+							<aside class="notes">A functional interface is an interface with a single abstract method.
+							</aside>
+						</li>
+						<li>Functional composition
+							<aside class="notes">Interfaces provided in java.util.function such as Function, Predicate, Consumer define default methods allowing functions to be chained together (functional composition) e.g. Function::andThen
+								Streams API provides methods for external iteration and functional composition for processing collections</aside>
+						</li>
+						</ul>
+					</section>
+					<section>
+						<h2>How to do it?</h2>
+						<ul>
+						<li>Identify where we are passing objects purely to pass behaviour</li>
+						<li>Externalise iteration over collections</li>
+						<li>Create new collections rather than mutating</li>
+						<li>Reduce mutability (pure functions)
+							<aside class="notes">Implement functions to have no side effects and not depend on external state (pure functions) - unlike purely functional languages, Java won't force this on us.
+							</aside>
+						</li>
+						</ul>
+					</section>
+					<section>
+					<aside class="notes">Functional interfaces have been added to many of the core apis.  
+						Lambdas to replace anonymous functions - 
+						removes excessive boilerplate code and makes the intention of the code clearer.  
+						IDE will suggest this change for you.
+						</aside>
+					<p>Example:</p>
+					<pre><code data-trim>
+					JButton okButton = new JButton();
+					okButton.addActionListener( new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent event) {
+								submitForm();
+							}});
+					</pre></code>
+					<p>Replaced with</p>
+					<pre><code data-trim>
+					JButton cancelButton = new JButton();
+					cancelButton.addActionListener( event -> cleanUpAndExit());
+					</pre></code>
+					</section>
+					<section>
+					<aside class="notes">
+					We can make use of predefined functional interfaces like predicate, consumer and supplier when we 
+					define our own methods to allow us to pass behaviour in our own code e g. Delayed conditional execution patterns- we can use functional interfaces like Supplier to make sure we only call expensive functions when we really need to.
+					Example if we have a message writer, but the process of producing the message itself is expensive:
+					</aside>
+					<pre><code data-trim>
+					public void writeMessage(String message){
+						if (messageRequired){
+							doWrite(message);
+						}
+					}	
+										
+					messageWriter.writeMessage(generateMessage());
+					</pre></code>
+					<p>Replaced with</p>
+					<pre><code class="java">
+					public void writeMessage(Supplier<String> messageSupplier){
+						if (messageRequired){
+							doWrite(messageSupplier.get());
+						}
+					}
+
+					messageWriter.writeMessage(() -> generateMessage());</pre></code>
+					</section>
+					<section>
+					<p>External iteration</p>
+					<p>Example:</p>
+					<pre><code class="java">
+					public String find(List<String> stringsToSearch, String stringToFind){
+						String found= null;
+						for( String string : stringsToSearch ){
+							if ( string.equals(stringToFind)){
+								found = string;
+								break;
+							}
+						}
+						return found;
+					}
+					</pre></code>
+					<p>Replaced with</p>
+					<pre><code class="java">
+					public String find(List<String> stringsToSearch, String stringToFind){
+						return stringsToSearch.stream().findFirst().orElse(null);
+					}
+					</pre></code>
+					</section>
+					<section>
+					<h2>Design Patterns</h2>
+					<aside class="notes">Some of the design patterns we're used to using may need to be re-thought 
+					- it's not that they're necessarily wrong, or a bad thing, 
+					but the limitations of the language up to now often means there's a lot of ritual or boiler plate 
+					around these patterns when actually they could now be implemented more concisely</aside>
+					<ul>
+					<li>Observer - e.g. Swing ActionListener</li>
+					<li>Chain of Responsibility</li><aside class="notes">?</aside>
+					<li>Abstract Factory</li><aside class="notes">?</aside>
+					<li>Strategy</li>
+					<li>Template</li><aside class="notes">?</aside>
+					<li>Decorator</li><aside class="notes">?</aside>
+					<li>Command pattern</li><aside class="notes">?</aside>
+					</ul>
 					</section>
  			</div>
 
