@@ -26,19 +26,19 @@ public class ImperativeLoveLetter {
 		Integer last = null;
 		
 		for(int i=0; i<5; i++){
-			if (generator.nextInt(10) < 5) {
+			if (generator.nextBoolean()) {
 				//LONG
-				String optadj1 = (generator.nextInt(10) < 5) ? "" : getRandomWord(adjs);
-				String noun1 = getRandomWord(nouns);
-				String optadv = (generator.nextInt(10) < 5) ? "" : getRandomWord(advs);
-				String verb = getRandomWord(verbs);
-				String optadj2 = (generator.nextInt(10) < 5) ? "" : getRandomWord(adjs);
-				String noun2 = getRandomWord(nouns);
-				String concat = "";
 				if (last != null || last == LONG) {
-					concat = ". ";
+					letter.append(". ");
 				}
-				letter.append(String.format("%s My %s %s %s %s your %s %s", concat, optadj1, noun1, optadv, verb, optadj2, noun2));
+				String optadj1 = generator.nextBoolean() ? "" : getRandomWord(adjs);
+				String noun1 = getRandomWord(nouns);
+				String optadv = generator.nextBoolean() ? "" : getRandomWord(advs);
+				String verb = getRandomWord(verbs);
+				String optadj2 = generator.nextBoolean() ? "" : getRandomWord(adjs);
+				String noun2 = getRandomWord(nouns);
+				
+				letter.append(String.format("My %s %s %s %s your %s %s", optadj1, noun1, optadv, verb, optadj2, noun2));
 				last = LONG;
 			} else {
 				//SHORT
