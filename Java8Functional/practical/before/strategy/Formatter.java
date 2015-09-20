@@ -1,4 +1,4 @@
-package designPatterns.strategy;
+package strategy;
 
 import java.util.List;
 

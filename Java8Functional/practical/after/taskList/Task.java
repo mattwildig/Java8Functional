@@ -1,8 +1,7 @@
-package taskListRefactored;
+package taskList;
 
 import java.time.LocalDate;
-//filter by tag, by due date, by description
-//sort by date and/or priority
+
 public class Task {
 	
 	private String tag;

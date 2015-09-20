@@ -1,4 +1,4 @@
-package designPatterns.java8strategy;
+package strategy;
 
 import java.util.List;
 import java.util.function.Function;
