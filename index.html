@@ -236,7 +236,10 @@ public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 					<p>Replaced with</p>
 					<pre><code data-trim>
 public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
-    return stringsToSearch.stream().findFirst().orElse(null);
+    return stringsToSearch.stream()
+                          .filter(string-&gt;string.equals(stringToFind))
+                          .findFirst()
+                          .orElse(null);
 }
 					</pre></code>
 					</section>
