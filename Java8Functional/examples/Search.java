@@ -16,7 +16,10 @@ public class Search {
 	}*/
 
 	String find(List<String> stringsToSearch, String stringToFind){
-		return stringsToSearch.stream().findFirst().orElse(null);
+		return stringsToSearch.stream()
+							  .filter(string->string.equals(stringToFind))
+							  .findFirst()
+							  .orElse(null);
 	}
 
 }
