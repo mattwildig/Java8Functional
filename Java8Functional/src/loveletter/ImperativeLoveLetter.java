@@ -6,6 +6,22 @@ import java.util.List;
 import java.util.Random;
 import java.lang.String;
 
+
+/**
+ * @author Debbie
+ * Algorithm for producing a 'love letter' based on Ferranti loveletters algorithm (Christopher Strachey 1952)
+ * this version is adapted into Java from a php version of the algorithm from here: https://github.com/gingerbeardman/loveletter
+ * 
+ * It produces 'letters' by selecting random words from predefined lists of nouns, verbs, adverbs, etc such that the sentences it forms are grammatically correct
+ * The letters have  two word greeting, followed by a comma and newline
+ * The algorithm then loops 5 times to produce a letter body
+ * Finally a signature is added, line break ", Yours <word>," line break M.U.C. 
+ * e.g.
+ * Dearest Moppet,
+ *    You are my loveable charm, my eager sympathy, my avid appetite. My winning ardour affectionately thirsts for your unsatisfied heart. You are my precious thirst.
+ *    Yours affectionately,
+ *    M.U.C.
+ */
 public class ImperativeLoveLetter {
 	static Integer LONG=1;
 	static Integer SHORT=2;
@@ -27,8 +43,10 @@ public class ImperativeLoveLetter {
 		
 		for(int i=0; i<5; i++){
 			if (generator.nextBoolean()) {
-				//LONG
-				if (last != null || last == LONG) {
+				//LONG - 
+				//Adds a sentence in the form "My <adjective> noun <adverb> verb <adjective> noun"
+				//prepending a ". " if necessary
+				if (last != null) {
 					letter.append(". ");
 				}
 				String optadj1 = generator.nextBoolean() ? "" : getRandomWord(adjs);
@@ -41,18 +59,23 @@ public class ImperativeLoveLetter {
 				letter.append(String.format("My %s %s %s %s your %s %s", optadj1, noun1, optadv, verb, optadj2, noun2));
 				last = LONG;
 			} else {
-				//SHORT
+				//SHORT -
+				//Adds a sentence segment. Multiple 'SHORT' sentence segments may be chained together
+				//The first takes the form "You are my adjective noun"
+				//Subsequent segments are chained together ", my adjective noun"
+				//Full stop will be added to the front of the first segment if it follows a 'LONG' sentence
+				//e.g. "You are my curious enchantment" + ", my avid hunger"
+				if (last == SHORT) {
+					letter.append( ", " );
+				} else if (last == LONG) {
+					letter.append( ". You are ");
+				} else {
+					letter.append( "You are " );
+				}
 				String adj = getRandomWord(adjs);
 				String noun = getRandomWord(nouns);
-				String concat = "";
-				if (last == SHORT) {
-					concat = ", ";
-				} else if (last == LONG) {
-					concat = ". You are";
-				} else {
-					concat = "You are";
-				}
-				letter.append(String.format("%s my %s %s", concat, adj, noun));
+				
+				letter.append(String.format("my %s %s", adj, noun));
 				last = SHORT;
 			}
 		}
