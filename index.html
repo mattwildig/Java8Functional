@@ -80,17 +80,17 @@
 									system 'what' you want done, and allowing it more freedom to optimize.
 							</aside>
 							<pre><code data-trim>
-								count = words.stream()
-											.filter((word)-&gt; {return word.equals(pattern);})
-											.count();
+count = words.stream()
+             .filter((word)-&gt; {return word.equals(pattern);})
+             .count();
 							</code></pre>
 							<p>Rather than</p>
 							<pre><code data-trim>
-								for( String word : words){
-									if (word.equals(pattern)){
-										++count;
-										}
-								}
+for( String word : words){
+    if (word.equals(pattern)){
+        ++count;
+    }
+}
 							</pre></code>
 						</section>
 						<section>
@@ -103,9 +103,9 @@
 							functional composition 
 							<aside class="notes">build up complex functions from smaller simpler functions</aside>
 							<pre><code data-trim>
-								List&lt;Book&gt; sortedBooks = books.stream()
-									.sorted(Comparator.comparing(Book::getAuthor).thenComparing(Book::getTitle))
-									.collect(Collectors.toList());
+List&lt;Book&gt; sortedBooks = books.stream()
+    .sorted(Comparator.comparing(Book::getAuthor).thenComparing(Book::getTitle))
+    .collect(Collectors.toList());
 									</pre></code>
 						</section>
 						<section>
@@ -180,17 +180,17 @@
 						</aside>
 					<p>Example:</p>
 					<pre><code data-trim>
-					JButton okButton = new JButton();
-					okButton.addActionListener( new ActionListener() {
-							@Override
-							public void actionPerformed(ActionEvent event) {
-								submitForm();
-							}});
+JButton okButton = new JButton();
+okButton.addActionListener( new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent event) {
+            submitForm();
+        }});
 					</pre></code>
 					<p>Replaced with</p>
 					<pre><code data-trim>
-					JButton cancelButton = new JButton();
-					cancelButton.addActionListener( event -&gt; cleanUpAndExit());
+JButton cancelButton = new JButton();
+cancelButton.addActionListener( event -&gt; cleanUpAndExit());
 					</pre></code>
 					</section>
 					<section>
@@ -200,44 +200,44 @@
 					Example if we have a message writer, but the process of producing the message itself is expensive:
 					</aside>
 					<pre><code data-trim>
-					public void writeMessage(String message){
-						if (messageRequired){
-							doWrite(message);
-						}
-					}	
-										
-					messageWriter.writeMessage(generateMessage());
+public void writeMessage(String message){
+    if (messageRequired){
+        doWrite(message);
+    }
+}	
+					
+messageWriter.writeMessage(generateMessage());
 					</pre></code>
 					<p>Replaced with</p>
 					<pre><code data-trim>
-					public void writeMessage(Supplier&lt;String&gt; messageSupplier){
-						if (messageRequired){
-							doWrite(messageSupplier.get());
-						}
-					}
+public void writeMessage(Supplier&lt;String&gt; messageSupplier){
+    if (messageRequired){
+        doWrite(messageSupplier.get());
+    }
+}
 
-					messageWriter.writeMessage(() -&gt; generateMessage());</pre></code>
+messageWriter.writeMessage(() -&gt; generateMessage());</pre></code>
 					</section>
 					<section>
 					<p>External iteration</p>
 					<p>Example:</p>
 					<pre><code data-trim>
-					public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
-						String found= null;
-						for( String string : stringsToSearch ){
-							if ( string.equals(stringToFind)){
-								found = string;
-								break;
-							}
-						}
-						return found;
-					}
+public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
+    String found= null;
+    for( String string : stringsToSearch ){
+        if ( string.equals(stringToFind)){
+            found = string;
+            break;
+        }
+    }
+    return found;
+}
 					</pre></code>
 					<p>Replaced with</p>
 					<pre><code data-trim>
-					public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
-						return stringsToSearch.stream().findFirst().orElse(null);
-					}
+public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
+    return stringsToSearch.stream().findFirst().orElse(null);
+}
 					</pre></code>
 					</section>
 					<section>
