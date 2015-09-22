@@ -14,7 +14,7 @@
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="reveal.js/css/reveal.min.css">
+		<link rel="stylesheet" href="reveal.js/css/reveal.css">
 		<link rel="stylesheet" href="reveal.js/css/theme/beige.css" id="theme">
         <link rel="stylesheet" href="css/textcolours.css">
 
@@ -349,7 +349,7 @@ public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 		</div>
 
 		<script src="reveal.js/lib/js/head.min.js"></script>
-		<script src="reveal.js/js/reveal.min.js"></script>
+		<script src="reveal.js/js/reveal.js"></script>
 
 		<script>
 
@@ -360,13 +360,12 @@ public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 				progress: true,
 				history: true,
 				center: true,
-
-				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
-
-				// Parallax scrolling
-				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
-				// parallaxBackgroundSize: '2100px 900px',
+				fragments: true,
+				embedded: false,
+				transition: 'fade', // none/fade/slide/convex/concave/zoom
+				transitionSpeed: 'default', // default/fast/slow
+				backgroundTransition: 'default', // none/fade/slide/convex/concave/zoom
+				viewDistance: 3,
 
 				// Optional libraries used to extend on reveal.js
 				dependencies: [
