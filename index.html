@@ -16,7 +16,7 @@
 
 		<link rel="stylesheet" href="reveal.js/css/reveal.min.css">
 		<link rel="stylesheet" href="reveal.js/css/theme/beige.css" id="theme">
-                <link rel="stylesheet" href="css/textcolours.css">
+        <link rel="stylesheet" href="css/textcolours.css">
 
 		<!-- For syntax highlighting -->
 		<link rel="stylesheet" href="reveal.js/lib/css/zenburn.css">
@@ -72,105 +72,156 @@
 					</aside>
 				</section>
 				<section>
-						<section>
-							<h2>Functional/Declarative Style vs Imperative Style</h2>
-							<p>what rather than how</p>
-							<aside class="notes">Up to now we've had to program Java in an imperative style- the code is written to 
-									tell the compiler exactly how to do something, whereas the declarative style can be seen as telling the 
-									system 'what' you want done, and allowing it more freedom to optimize.
-							</aside>
-							<pre><code data-trim>
+					<section>
+						<h2>Functional/Declarative Style vs Imperative Style</h2>
+						<ul>
+						<li>what rather than how</li>
+						<aside class="notes">Up to now we've had to program Java in an imperative style- the code is written to 
+								tell the compiler exactly how to do something, whereas the declarative style can be seen as telling the 
+								system 'what' you want done, and allowing it more freedom to optimize.
+						</aside>
+						</ul>
+					</section>
+					<section>
+						<p>Code like this</p>
+						<pre><code data-trim>
 count = words.stream()
              .filter((word)-&gt; {return word.equals(pattern);})
              .count();
-							</code></pre>
-							<p>Rather than</p>
-							<pre><code data-trim>
+						</code></pre>
+						<p>Rather than</p>
+						<pre><code data-trim>
 for( String word : words){
     if (word.equals(pattern)){
         ++count;
     }
 }
-							</pre></code>
-						</section>
-						<section>
-								pass functions as well as objects 
-								<aside class="notes"> functions and objects treated the same - 
+						</pre></code>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Functional/Declarative Style vs Imperative Style</h2>
+						<ul>
+						<li>what rather than how</li>
+						<li>pass functions as well as objects </li>
+						</ul>
+						<aside class="notes"> functions and objects treated the same - 
 								lambda in example above is function passed in to the method filter
 								</aside>
-						</section>
-						<section>
-							functional composition 
-							<aside class="notes">build up complex functions from smaller simpler functions</aside>
+
+					</section>
+					<section>
+						<p>Lambdas are behaviour (functions) passed like objects in older java</p>
+						<pre><code data-trim>
+count = words.stream()
+             .filter((word)-&gt; {return word.equals(pattern);})
+             .count();
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Functional/Declarative Style vs Imperative Style</h2>
+						<ul>
+						<li>what rather than how</li>
+						<li>pass functions as well as objects </li>
+						<li>functional composition</li>
+						</ul>
+					</section>
+					<section>
+							<p>build up complex functions from smaller simpler functions</p>
+							<span class="fragment fade-in">
 							<pre><code data-trim>
 List&lt;Book&gt; sortedBooks = books.stream()
-    .sorted(Comparator.comparing(Book::getAuthor).thenComparing(Book::getTitle))
+    .sorted(Comparator.comparing(Book::getAuthor)
+                      .thenComparing(Book::getTitle))
     .collect(Collectors.toList());
 									</pre></code>
-						</section>
-						<section>
-
-							<p class="fragment roll-in">Transform rather than mutate</p> 
-							<aside class="notes">example above we get a new list 'sortedBooks' rather 
-							than modifying the original books container.</aside>
-							<p class="fragment roll-in">Pure functions rather than those with side-effects</p>
-
-						</section>
+							</span>
 					</section>
+				</section>
+				<section>
 					<section>
-						<h2>Why do this?</h2>
+						<h2>Functional/Declarative Style vs Imperative Style</h2>
 						<ul>
-						<li>Makes it easier to make use of parallelism 
-							<aside class="notes">
-							pure functions more likely to be thread safe, streams API parallel streams are easy to add
-							</aside>
-						</li>
-						<li>Makes code more concise
-							<aside class="notes">less 'boiler plate'</aside>
-						</li>
-						<li>Less error prone
-							<aside class="notes">maybe? - esp for pure functions 
-							(less side-effects means less 'odd' bugs caused by code executing in an unexpected order)
-							</aside>
-						</li>
-						<li>Makes intention of code clearer
-							<aside class="notes"> more readable? (once you get used to the new syntax)</aside>
-						</li>
-						<li>More efficient
-							<aside class="notes"> possibly? Compiler *may* be able to optimize code in declarative style</aside>
-						</li>
+						<li>what rather than how</li>
+						<li>pass functions as well as objects </li>
+						<li>functional composition</li>
+						<li>Transform rather than mutate</li>
 						</ul>
 					</section>
 					<section>
-						<h2>Functional programming support in Java 8</h2>
+							<p>sortedBooks is a new container, we don't change books</p>
+							<pre><code data-trim>
+List&lt;Book&gt; sortedBooks = books.stream()
+    .sorted(Comparator.comparing(Book::getAuthor)
+                      .thenComparing(Book::getTitle))
+    .collect(Collectors.toList());
+									</pre></code>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Functional/Declarative Style vs Imperative Style</h2>
 						<ul>
-						<li>Lambdas
-							<aside class="notes">Lambdas allow us to store or pass (or return) a function where we might previously 
-							have only expected to be able to use an object. Lambdas can be used anywhere where a functional interface 
-							is expected.
-							</aside>
-						</li>
-						<li>Functional interfaces
-							<aside class="notes">A functional interface is an interface with a single abstract method.
-							</aside>
-						</li>
-						<li>Functional composition
-							<aside class="notes">Interfaces provided in java.util.function such as Function, Predicate, Consumer define default methods allowing functions to be chained together (functional composition) e.g. Function::andThen
-								Streams API provides methods for external iteration and functional composition for processing collections</aside>
-						</li>
+						<li>what rather than how</li>
+						<li>pass functions as well as objects </li>
+						<li>functional composition</li>
+						<li>Transform rather than mutate</li>
+						<li>Pure functions rather than those with side-effects</li>
 						</ul>
 					</section>
+				</section>
+				<section>
+					<h2>Why do this?</h2>
+					<ul>
+					<li>Makes it easier to make use of parallelism 
+						<aside class="notes">
+						pure functions more likely to be thread safe, streams API parallel streams are easy to add
+						</aside>
+					</li>
+					<li>Makes code more concise
+						<aside class="notes">less 'boiler plate'</aside>
+					</li>
+					<li>Less error prone
+						<aside class="notes">maybe? - esp for pure functions 
+						(less side-effects means less 'odd' bugs caused by code executing in an unexpected order)
+						</aside>
+					</li>
+					<li>Makes intention of code clearer
+						<aside class="notes"> more readable? (once you get used to the new syntax)</aside>
+					</li>
+					<li>More efficient
+						<aside class="notes"> possibly? Compiler *may* be able to optimize code in declarative style</aside>
+					</li>
+					</ul>
+				</section>
+				<section>
+					<h2>Functional programming support in Java 8</h2>
+					<ul>
+					<li>Lambdas
+						<aside class="notes">Lambdas allow us to store or pass (or return) a function where we might previously 
+						have only expected to be able to use an object. Lambdas can be used anywhere where a functional interface 
+						is expected.
+						</aside>
+					</li>
+					<li>Functional interfaces
+						<aside class="notes">A functional interface is an interface with a single abstract method.
+						</aside>
+					</li>
+					<li>Functional composition
+						<aside class="notes">Interfaces provided in java.util.function such as Function, Predicate, Consumer define default methods allowing functions to be chained together (functional composition) e.g. Function::andThen
+							Streams API provides methods for external iteration and functional composition for processing collections</aside>
+					</li>
+					</ul>
+				</section>
+				<section>
 					<section>
 						<h2>How to do it?</h2>
 						<ul>
 						<li>Identify where we are passing objects purely to pass behaviour</li>
-						<li>Externalise iteration over collections</li>
-						<li>Create new collections rather than mutating</li>
-						<li>Reduce mutability (pure functions)
-							<aside class="notes">Implement functions to have no side effects and not depend on external state (pure functions) - unlike purely functional languages, Java won't force this on us.
-							</aside>
-						</li>
-						</ul>
+					</ul>
 					</section>
 					<section>
 					<aside class="notes">Functional interfaces have been added to many of the core apis.  
@@ -178,7 +229,7 @@ List&lt;Book&gt; sortedBooks = books.stream()
 						removes excessive boilerplate code and makes the intention of the code clearer.  
 						IDE will suggest this change for you.
 						</aside>
-					<p>Example:</p>
+					<p>Creating an anonymous class just to implement a single method like this:</p>
 					<pre><code data-trim>
 JButton okButton = new JButton();
 okButton.addActionListener( new ActionListener() {
@@ -187,7 +238,7 @@ okButton.addActionListener( new ActionListener() {
             submitForm();
         }});
 					</pre></code>
-					<p>Replaced with</p>
+					<p>Can now be done with a lambda like this:</p>
 					<pre><code data-trim>
 JButton cancelButton = new JButton();
 cancelButton.addActionListener( event -&gt; cleanUpAndExit());
@@ -218,6 +269,15 @@ public void writeMessage(Supplier&lt;String&gt; messageSupplier){
 
 messageWriter.writeMessage(() -&gt; generateMessage());</pre></code>
 					</section>
+				</section>
+				<section>
+						<h2>How to do it?</h2>
+						<ul>
+						<li>Identify where we are passing objects purely to pass behaviour</li>
+						<li>Externalise iteration over collections</li>
+						</ul>
+					</section>
+
 					<section>
 					<p>External iteration</p>
 					<p>Example:</p>
@@ -243,7 +303,32 @@ public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 }
 					</pre></code>
 					</section>
+				</section>
+				<section>
 					<section>
+						<h2>How to do it?</h2>
+						<ul>
+						<li>Identify where we are passing objects purely to pass behaviour</li>
+						<li>Externalise iteration over collections</li>
+						<li>Create new collections rather than mutating</li>
+						</ul>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>How to do it?</h2>
+						<ul>
+						<li>Identify where we are passing objects purely to pass behaviour</li>
+						<li>Externalise iteration over collections</li>
+						<li>Create new collections rather than mutating</li>
+						<li>Reduce mutability (pure functions)
+							<aside class="notes">Implement functions to have no side effects and not depend on external state (pure functions) - unlike purely functional languages, Java won't force this on us.
+							</aside>
+						</li>
+						</ul>
+					</section>
+				</section>
+				<section>
 					<h2>Design Patterns</h2>
 					<aside class="notes">Some of the design patterns we're used to using may need to be re-thought 
 					- it's not that they're necessarily wrong, or a bad thing, 
@@ -258,7 +343,7 @@ public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 					<li>Decorator</li><aside class="notes">?</aside>
 					<li>Command pattern</li><aside class="notes">?</aside>
 					</ul>
-					</section>
+				</section>
  			</div>
 
 		</div>
@@ -277,7 +362,7 @@ public String find(List&lt;String&gt; stringsToSearch, String stringToFind){
 				center: true,
 
 				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+				transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
 
 				// Parallax scrolling
 				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
