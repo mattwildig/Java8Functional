@@ -22,7 +22,7 @@ import java.lang.String;
  *    Yours affectionately,
  *    M.U.C.
  */
-public class ImperativeLoveLetter {
+public class LoveLetter {
 	static Integer LONG=1;
 	static Integer SHORT=2;
 	Random generator = new Random();

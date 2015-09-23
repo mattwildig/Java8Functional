@@ -7,7 +7,27 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class FunctionalLoveLetter {
+/**
+ * @author Debbie
+ * Algorithm for producing a 'love letter' based on Ferranti loveletters algorithm (Christopher Strachey 1952)
+ * this version is adapted into Java from a php version of the algorithm from here: https://github.com/gingerbeardman/loveletter
+ * 
+ * It produces 'letters' by selecting random words from predefined lists of nouns, verbs, adverbs, etc such that the sentences it forms are grammatically correct
+ * The letters have  two word greeting, followed by a comma and newline
+ * The algorithm then loops 5 times to produce a letter body
+ * Finally a signature is added, line break ", Yours <word>," line break M.U.C. 
+ * e.g.
+ * Dearest Moppet,
+ *    You are my loveable charm, my eager sympathy, my avid appetite. My winning ardour affectionately thirsts for your unsatisfied heart. You are my precious thirst.
+ *    Yours affectionately,
+ *    M.U.C.
+ *
+ * NOTE: this solution isn't perfect!  
+ * It doesn't produce output in exactly the same form as the original imperative one- some of the spacing is different
+ * and also it will produce 5 sentences, as opposed to 5 segments as in the original algorithm
+ * It also isn't strictly functional, because of the use of the random number generator in the the methods, so they're not predictable...
+ */
+public class LoveLetter {
 	
 	List<String> sals1 = new ArrayList<>(Arrays.asList("Beloved", "Darling", "Dear", "Dearest", "Fanciful", "Honey"));
 	List<String> sals2 = new ArrayList<>(Arrays.asList("Chickpea", "Dear", "Duck", "Jewel", "Love", "Moppet", "Sweetheart"));
