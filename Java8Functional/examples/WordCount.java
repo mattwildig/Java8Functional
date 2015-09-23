@@ -1,6 +1,6 @@
-package examples;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -53,6 +53,24 @@ public class WordCount {
 			.collect(Collectors.toList());
 	}
 	
+	/**
+	 * Illustrates old style sort where original input is altered
+	 * @param titles
+	 */
+	public void mutatingSort(List<String> titles){
+		Collections.sort(titles);
+	}
+	
+	/**
+	 * Illustrates functional style sort, a new collection is created
+	 * the original input is unchanged.
+	 * @param titles
+	 */
+	public void transformingSort(List<String> titles){
+		List<String> sortedList = titles.stream()
+				.sorted()
+				.collect(Collectors.toList());
+	}
 	/**
 	 * Class used purely for illustration in function composition above
 	 * @author Debbie
