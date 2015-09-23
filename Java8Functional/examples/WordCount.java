@@ -14,14 +14,14 @@ public class WordCount {
 	
 	/**
 	 * Used in slides to illustrate internal iteration and mutating state
-	 * @param words 	list of strings to be searched for matches
-	 * @param pattern 	string to search for
-	 * @return			count of strings in words containing pattern
+	 * @param words 		list of strings to be searched for matches
+	 * @param wordToMatch 	string to search for
+	 * @return				count of strings in words matching wordToMatch
 	 */
-	public int imperativeCount(List<String> words, String pattern){
+	public int imperativeCount(List<String> words, String wordToMatch){
 		int count =0;
 		for( String word : words){
-			if (word.equals(pattern)){
+			if (word.equals(wordToMatch)){
 				++count;
 			}
 		}
@@ -30,13 +30,13 @@ public class WordCount {
 	
 	/**
 	 * Used in slides to illustrate functional equivalent to imperativeCount
-	 * @param words 	list of strings to be searched for matches  
-	 * @param pattern 	string to search for                        
-	 * @return			count of strings in words containing pattern
+	 * @param words 		list of strings to be searched for matches  
+	 * @param wordToMatch 	string to search for                        
+	 * @return				count of strings in words matching wordToMatch
 	 */
-	public long functionalCount(List<String> words, String pattern){
+	public long functionalCount(List<String> words, String wordToMatch){
 		long count = words.stream()
-				.filter((word)-> {return word.equals(pattern);})
+				.filter((word)-> {return word.equals(wordToMatch);})
 				.count();
 		return count;
 	}
