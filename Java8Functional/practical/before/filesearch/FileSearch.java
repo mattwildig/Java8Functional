@@ -1,6 +1,7 @@
 package filesearch;
 
 import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -24,16 +25,13 @@ public class FileSearch {
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
 		try (BufferedReader reader = Files.newBufferedReader(
 		        Paths.get(file), StandardCharsets.UTF_8)) {
-			String line = reader.readLine();
-			while (line != null){
-				String[] words = wordMatcher.split(line);
-				for( String word : words){
-					if (word.equals(wordToMatch)){
-						++count;
-					}
-				}
-				line = reader.readLine();
-			}
+
+			return (int)reader.lines()
+				.flatMap(wordMatcher::splitAsStream)
+				.filter( w -> !w.isEmpty())
+				.filter( w -> w.equals(wordToMatch))
+				.count();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,26 +45,21 @@ public class FileSearch {
 	 * @return		total number of words
 	 */
 	public int countWords(String file){
-		int count = 0;
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
+
 		try (BufferedReader reader = Files.newBufferedReader(
 		        Paths.get(file), StandardCharsets.UTF_8)) {
-			String line = reader.readLine();
-			while (line != null){
-				String[] words = wordMatcher.split(line);
-				for( String word : words){
-					//Make sure we only count words, not blank lines
-					if(!word.isEmpty()){
-						++ count;
-					}
-				}
-				line = reader.readLine();
-			}
+
+			return (int)reader.lines()
+				.flatMap(wordMatcher::splitAsStream)
+				.filter( w -> !w.isEmpty())
+				.count();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return count;
+		return 0;
 	}
 
 	/**
@@ -80,19 +73,14 @@ public class FileSearch {
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
 		try (BufferedReader reader = Files.newBufferedReader(
 		        Paths.get(file), StandardCharsets.UTF_8)) {
-			Set<String> distinctWords = new HashSet<>();
-			String line = reader.readLine();
-			while (line != null){
-				String[] words = wordMatcher.split(line);
-				for( String word : words){
-					//Make sure we only count words, not blank lines
-					if(!word.isEmpty()){
-						distinctWords.add(word.toLowerCase());
-					}
-				}
-				line = reader.readLine();
-			}
-			count = distinctWords.size();
+
+			return (int)reader.lines()
+				.flatMap(wordMatcher::splitAsStream)
+				.filter( w -> !w.isEmpty())
+				.map(String::toLowerCase)
+				.distinct()
+				.count();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -111,16 +99,13 @@ public class FileSearch {
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
 		try (BufferedReader reader = Files.newBufferedReader(
 		        Paths.get(file), StandardCharsets.UTF_8)) {
-			String line = reader.readLine();
-			while (line != null){
-				String[] words = wordMatcher.split(line);
-				for( String word : words){
-					if(word.length() > maxLength){
-						maxLength = word.length();
-					}
-				}
-				line = reader.readLine();
-			}
+
+			return (int)reader.lines()
+				.flatMap(wordMatcher::splitAsStream)
+				.filter( w -> !w.isEmpty())
+				.max((a, b) -> a.length() - b.length()).orElse("")
+				.length();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
