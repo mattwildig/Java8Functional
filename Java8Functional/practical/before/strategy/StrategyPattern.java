@@ -1,16 +1,16 @@
 package strategy;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.stream.Stream;
+import java.util.function.Function;
 
 public class StrategyPattern {
-	private Formatter formattingStrategy;
-	public StrategyPattern(Formatter strategy){
+	private Function<Stream<String>, String> formattingStrategy;
+	public StrategyPattern(Function<Stream<String>, String> strategy){
 		this.formattingStrategy = strategy;
 	}
 	public void doStuff(){
-		List<String> strings = Arrays.asList("apple","zebra","tree");
-		System.out.println(formattingStrategy.format(strings));
+		Stream<String> strings = Stream.of("apple","zebra","tree");
+		System.out.println(formattingStrategy.apply(strings));
 	}
 
 }
