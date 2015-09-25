@@ -23,8 +23,8 @@ public class FileSearch {
 	public int countInstances(String file, String wordToMatch){
 		int count = 0;
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
-		try (BufferedReader reader = Files.newBufferedReader(
-		        Paths.get(file), StandardCharsets.UTF_8)) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
@@ -47,8 +47,8 @@ public class FileSearch {
 	public int countWords(String file){
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
 
-		try (BufferedReader reader = Files.newBufferedReader(
-		        Paths.get(file), StandardCharsets.UTF_8)) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
@@ -71,8 +71,8 @@ public class FileSearch {
 	public int countDistinctWords(String file){
 		int count = 0;
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
-		try (BufferedReader reader = Files.newBufferedReader(
-		        Paths.get(file), StandardCharsets.UTF_8)) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
@@ -97,8 +97,8 @@ public class FileSearch {
 	public int longestWordLength(String file){
 		int maxLength = 0;
 		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
-		try (BufferedReader reader = Files.newBufferedReader(
-		        Paths.get(file), StandardCharsets.UTF_8)) {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
+			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
