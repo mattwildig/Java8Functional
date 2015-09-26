@@ -5,42 +5,49 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.util.stream.Collectors;
+import java.util.Comparator;
+
+import static java.util.Comparator.comparing;
+
 public class TaskList {
 	
 	/* (non-Javadoc)
 	 * tests for TaskListProcessor
 	 */
 	public static void main(String args[]){
-		List<Task> tasks = getTasks(); 
-		
+		List<Task> tasks = getTasks();
+
 		System.out.println("Tasks by tag 'admin' sorted by dueDate");
-		TaskListProcessor processor = new TaskListProcessor ( new TagFilter(null, "admin"),
-															  new TaskListSorter( new DateSorter(null)));
-				
-		List<Task> processedTasks = processor.filterAndSortList(tasks);
-		for( Task task : processedTasks){
-			System.out.println(task);
-		}
+
+		tasks.stream()
+			.filter(t -> t.getTag() != null && t.getTag().contains("admin"))
+			.sorted(comparing(Task::getDueDate))
+			.forEach(System.out::println);
+
 		System.out.println("----");
 		
-		System.out.println("Tasks by tag 'admin' and priority < 2 sorted by dueDate");
-		TaskListProcessor processor2 = new TaskListProcessor ( new TagFilter( new PriorityFilter(null, 2), "admin"),
-												new TaskListSorter( new DateSorter(null)));
-		
-		processedTasks = processor2.filterAndSortList(tasks);
-		for( Task task : processedTasks){
-			System.out.println(task);
-		}
-		
+		System.out.println("Tasks by tag 'admin' and priority <= 2 sorted by dueDate");
+
+		tasks.stream()
+			.filter(t -> t.getTag() != null && t.getTag().contains("admin"))
+			.filter(t -> t.getPriority() != null && t.getPriority() <= 2)
+			.sorted(comparing(Task::getDueDate))
+			.forEach(System.out::println);
+
 		System.out.println("----");
+
 		System.out.println("Tasks by tag 'admin' and priority < 2 sorted by dueDate then description");
-		TaskListProcessor processor3 = new TaskListProcessor ( new TagFilter( new PriorityFilter(null, 2), "admin"),
-				new TaskListSorter( new DateSorter(new DescriptionSorter(null))));
-			
-		processedTasks = processor3.filterAndSortList(tasks);
-		for( Task task : processedTasks){
-			System.out.println(task);
-		}
+
+		tasks.stream()
+			.filter(t -> t.getTag() != null && t.getTag().contains("admin"))
+			.filter(t -> t.getPriority() != null && t.getPriority() <= 2)
+			.sorted(
+				comparing(Task::getDueDate)
+				.thenComparing(comparing(Task::getDescription))
+			)
+			.forEach(System.out::println);
+
 	}
 	
 	//Generate test data
