@@ -7,6 +7,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
 import java.util.function.Predicate;
+import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.util.function.Predicate.isEqual;
 import static java.util.Comparator.comparing;
@@ -15,6 +17,7 @@ import static java.util.stream.Collectors.summarizingInt;
 public class FileSearch {
 	//Regular expression to match word boundaries (space & punctuation)
 	private static final String WORD_REGEXP = "[- .:,;!?]+";
+	private static final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
 
 	/**
 	 * Count the number of words that match supplied word in supplied file
@@ -23,23 +26,7 @@ public class FileSearch {
 	 * @return				number of matches
 	 */
 	public int countInstances(String file, String wordToMatch){
-		int count = 0;
-		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
-
-			return (int)reader.lines()
-				.flatMap(wordMatcher::splitAsStream)
-				.filter(
-					((Predicate<String>)String::isEmpty).negate()
-					.and( isEqual(wordToMatch)))
-				.count();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return count;
+		return processText(file, f -> (int)f.filter(isEqual(wordToMatch)).count());
 	}
 	
 	/**
@@ -48,21 +35,7 @@ public class FileSearch {
 	 * @return		total number of words
 	 */
 	public int countWords(String file){
-		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
-
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
-
-			return (int)reader.lines()
-				.flatMap(wordMatcher::splitAsStream)
-				.filter(((Predicate<String>)String::isEmpty).negate())
-				.count();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
+		return processText(file, f -> (int)f.count());
 	}
 
 	/**
@@ -72,23 +45,9 @@ public class FileSearch {
 	 * @return		total number of different words
 	 */
 	public int countDistinctWords(String file){
-		int count = 0;
-		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
-		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
-			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
-
-			return (int)reader.lines()
-				.flatMap(wordMatcher::splitAsStream)
-				.filter( ((Predicate<String>)String::isEmpty).negate())
-				.map(String::toLowerCase)
+		return processText(file, f -> (int)f.map(String::toLowerCase)
 				.distinct()
-				.count();
-
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return count;
+				.count());
 	}
 
 	/**
@@ -98,21 +57,21 @@ public class FileSearch {
 	 * @return		length of longest word
 	 */
 	public int longestWordLength(String file){
-		int maxLength = 0;
-		final Pattern wordMatcher = Pattern.compile(WORD_REGEXP);
+		return processText(file, f -> f.collect(summarizingInt(String::length)).getMax());
+	}
+
+	private int processText(String file, Function<Stream<String>, Integer> f) {
 		try (BufferedReader reader = new BufferedReader(new InputStreamReader(
 			getClass().getResourceAsStream(file), StandardCharsets.UTF_8))) {
 
-			return (int)reader.lines()
-				.flatMap(wordMatcher::splitAsStream)
-				.collect(summarizingInt(String::length))
-				.getMax();
+			return f.apply(reader.lines()
+				.filter(((Predicate<String>)String::isEmpty).negate())
+				.flatMap(wordMatcher::splitAsStream));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return 0;
 		}
-		return maxLength;
 	}
 
 	public static void main(String args[]){
