@@ -6,10 +6,16 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.regex.Pattern;
 
+import java.util.function.Predicate;
+
+import static java.util.function.Predicate.isEqual;
+import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.summarizingInt;
+
 public class FileSearch {
 	//Regular expression to match word boundaries (space & punctuation)
 	private static final String WORD_REGEXP = "[- .:,;!?]+";
-	
+
 	/**
 	 * Count the number of words that match supplied word in supplied file
 	 * @param file			file to process
@@ -24,8 +30,9 @@ public class FileSearch {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
-				.filter( w -> !w.isEmpty())
-				.filter( w -> w.equals(wordToMatch))
+				.filter(
+					((Predicate<String>)String::isEmpty).negate()
+					.and( isEqual(wordToMatch)))
 				.count();
 
 		} catch (IOException e) {
@@ -48,7 +55,7 @@ public class FileSearch {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
-				.filter( w -> !w.isEmpty())
+				.filter(((Predicate<String>)String::isEmpty).negate())
 				.count();
 
 		} catch (IOException e) {
@@ -72,7 +79,7 @@ public class FileSearch {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
-				.filter( w -> !w.isEmpty())
+				.filter( ((Predicate<String>)String::isEmpty).negate())
 				.map(String::toLowerCase)
 				.distinct()
 				.count();
@@ -98,9 +105,8 @@ public class FileSearch {
 
 			return (int)reader.lines()
 				.flatMap(wordMatcher::splitAsStream)
-				.filter( w -> !w.isEmpty())
-				.max((a, b) -> a.length() - b.length()).orElse("")
-				.length();
+				.collect(summarizingInt(String::length))
+				.getMax();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
